@@ -40,7 +40,7 @@ import Control.Concurrent hiding (yield)
 import Control.Exception
 import Control.Lens hiding (List, Empty)
 import Control.Monad
-import Control.Monad.Catch (MonadThrow)
+import Control.Monad.Catch (MonadThrow, MonadCatch)
 import Control.Monad.Except
 import Control.Monad.IO.Class
 #if __GLASGOW_HASKELL__ == 806
@@ -93,7 +93,7 @@ import Colog.Core (LogAction (..), WithSeverity (..), Severity (..))
 -- 'Language.LSP.Test.sendNotification'.
 
 newtype Session a = Session (ConduitParser FromServerMessage (StateT SessionState (ReaderT SessionContext IO)) a)
-  deriving (Functor, Applicative, Monad, MonadIO, Alternative, MonadThrow)
+  deriving (Functor, Applicative, Monad, MonadIO, Alternative, MonadThrow, MonadCatch)
 
 #if __GLASGOW_HASKELL__ >= 806
 instance MonadFail Session where
