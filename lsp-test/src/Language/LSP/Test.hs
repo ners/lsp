@@ -22,7 +22,7 @@ You should import "Language.LSP.Types" alongside this.
 module Language.LSP.Test
   (
   -- * Sessions
-    Session
+    Session(..)
   , runSession
   , runSessionWithConfig
   , runSessionWithConfigCustomProcess
