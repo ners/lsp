@@ -447,7 +447,7 @@ sendMessage msg = do
   liftIO $ B.hPut h (addHeader $ encode msg) `catch` (throw . MessageSendError (toJSON msg))
 
 -- | Execute a block f that will throw a 'Language.LSP.Test.Exception.Timeout' exception
--- after duration seconds. This will override the global timeout
+-- after duration microseconds. This will override the global timeout
 -- for waiting for messages to arrive defined in 'SessionConfig'.
 withTimeout :: Int -> Session a -> Session a
 withTimeout duration f = do
@@ -455,7 +455,7 @@ withTimeout duration f = do
   timeoutId <- getCurTimeoutId
   modify $ \s -> s { overridingTimeout = True }
   tid <- liftIO $ forkIO $ do
-    threadDelay (duration * 1000000)
+    threadDelay duration
     writeChan chan (TimeoutMessage timeoutId)
   res <- f
   liftIO $ killThread tid
